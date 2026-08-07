@@ -297,7 +297,7 @@ function renderGrid(){
     const stockLine=(p.stock===undefined||p.stock===null||p.stock==='')?'':(oos?'<div class="stock-badge stock-out">نفذت الكمية</div>':`<div class="stock-badge">متبقي: ${p.stock}</div>`);
     const hasTiers=(p.discount_tiers||[]).length>0;
     const discBadge=hasTiers?'<div class="card-discount-badge">🏷️ خصم عند زيادة الكمية</div>':'';
-    const shipBadge=p.shipping_included===false?`<div class="card-shipping-badge" style="color:#ffb85e;">🚚 شحن ${fmt(p.shipping_fee||0)}</div>`:'<div class="card-shipping-badge">🚚 شامل الشحن</div>';
+    const shipBadge=p.shipping_included===false?`<div class="card-shipping-badge" style="color:#ffb85e;">🚚 شحن ${fmt(p.shipping_fee||0)}</div>`:'<div class="card-shipping-badge">🚚 التوصيل مجاني</div>';
     const badgeRibbon=p.badge?`<div class="badge-ribbon">${p.badge}</div>`:'';
     const countdown=saleCountdownText(p);
     const countdownHtml=countdown?`<div class="card-countdown">${countdown}</div>`:'';
@@ -365,8 +365,8 @@ function openDetail(id){
   addBtn.disabled=oos;addBtn.style.opacity=oos?'.5':'1';addBtn.textContent=oos?'غير متاح':'أضف للسلة';
   document.getElementById('qtyVal').textContent=detailQty;
   const shipEl=document.getElementById('detailShipping');
-  if(p.shipping_included===false){shipEl.textContent=`🚚 مصاريف الشحن: ${fmt(p.shipping_fee||0)}`;shipEl.className='detail-shipping extra';}
-  else{shipEl.textContent='🚚 شامل مصاريف الشحن';shipEl.className='detail-shipping included';}
+  if(p.shipping_included===false){shipEl.textContent=`🚚التوصيل مجاني: ${fmt(p.shipping_fee||0)}`;shipEl.className='detail-shipping extra';}
+  else{shipEl.textContent='🚚 التوصيل مجاني';shipEl.className='detail-shipping included';}
   updateDetailPrice();
   renderSuggestions(p);
   navigate('detail');
