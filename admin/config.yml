@@ -1,0 +1,76 @@
+backend:
+  name: github
+  repo: kiserimpact77-cpu/shopping-online
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: "images"
+public_folder: "/images"
+
+locale: "ar"
+
+collections:
+  - name: "products"
+    label: "المنتجات"
+    files:
+      - name: "products"
+        label: "قائمة المنتجات"
+        file: "products.json"
+        fields:
+          - label: "المنتجات"
+            name: "products"
+            widget: "list"
+            summary: "{{name}} — {{price}} جنيه"
+            fields:
+              # ===== الأساسيات =====
+              - {label: "اسم المنتج", name: "name", widget: "string"}
+              - {label: "السعر (جنيه)", name: "price", widget: "number", value_type: "float"}
+              - {label: "صورة المنتج الرئيسية", name: "image", widget: "image"}
+              - {label: "وصف المنتج", name: "description", widget: "text", required: false}
+              - {label: "القسم", name: "category", widget: "string", required: false, hint: "اكتب اسم القسم، مثال: تليفونات"}
+              - {label: "كود المجموعة (لربط منتجات مشابهة)", name: "group_id", widget: "string", required: false}
+              - {label: "ظاهر في الصفحة الرئيسية", name: "is_main", widget: "boolean", default: true}
+              - {label: "الكمية المتاحة (اتركه فاضي = غير محدود)", name: "stock", widget: "number", required: false, value_type: "int"}
+
+              # ===== الشحن =====
+              - label: "الشحن شامل السعر؟"
+                name: "shipping_included"
+                widget: "boolean"
+                default: true
+                hint: "فعّال = مجاني/شامل، غير فعّال = هيتحدد رسوم إضافية تحت"
+              - {label: "رسوم الشحن (لو مش شامل)", name: "shipping_fee", widget: "number", required: false, default: 0, value_type: "float"}
+
+              # ===== خصومات الكمية =====
+              - label: "خصومات الكمية"
+                name: "discount_tiers"
+                widget: "list"
+                required: false
+                summary: "{{fields.min_qty}} قطعة → خصم {{fields.discount_pct}}%"
+                fields:
+                  - {label: "عدد القطع", name: "min_qty", widget: "number", value_type: "int"}
+                  - {label: "نسبة الخصم %", name: "discount_pct", widget: "number", value_type: "int"}
+
+              # ===== 7 مميزات اختيارية جديدة =====
+              - {label: "🏷️ شارة على المنتج (اختياري)", name: "badge", widget: "string", required: false, hint: "مثال: جديد / الأكثر مبيعًا / أي نص"}
+
+              - label: "🖼️ معرض صور إضافي (اختياري)"
+                name: "gallery"
+                widget: "list"
+                required: false
+                field: {label: "صورة", name: "src", widget: "image"}
+
+              - label: "📐 خيارات المنتج - مقاس/لون (اختياري)"
+                name: "variants"
+                widget: "list"
+                required: false
+                field: {label: "الخيار", name: "value", widget: "string"}
+
+              - {label: "⏳ تاريخ انتهاء العرض (اختياري)", name: "sale_ends_at", widget: "datetime", required: false}
+
+              - {label: "🔢 ترتيب الظهور (اختياري، رقم أصغر = يظهر الأول)", name: "sort_order", widget: "number", required: false, value_type: "int"}
+
+              - {label: "📝 ملاحظة إضافية تحت المنتج (اختياري)", name: "note", widget: "string", required: false, hint: "مثال: التوصيل خلال 3 أيام"}
+
+              - {label: "⭐ تقييم يدوي من 5 (اختياري)", name: "rating", widget: "number", required: false, value_type: "float", hint: "مثال: 4.5"}
+              - {label: "👥 عدد المقيّمين (اختياري)", name: "rating_count", widget: "number", required: false, value_type: "int"}
