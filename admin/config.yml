@@ -34,7 +34,7 @@ collections:
               - {label: "الكمية المتاحة (اتركه فاضي = غير محدود)", name: "stock", widget: "number", required: false, value_type: "int"}
 
               # ===== الشحن =====
-              - label: "الشحن شامل السعر؟"
+              - label: "التوصيل مجاني🚗"
                 name: "shipping_included"
                 widget: "boolean"
                 default: true
