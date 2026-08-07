@@ -1,1 +1,32 @@
-{"products": []}
+{
+  "products": [
+    {
+      "sale_ends_at": "2026-08-07T22:25:00.000+03:00",
+      "badge": "انمي",
+      "price": 250,
+      "name": "Kaiser",
+      "shipping_included": true,
+      "sort_order": 1,
+      "rating_count": 3,
+      "variants": [
+        "مقاس"
+      ],
+      "is_main": true,
+      "gallery": [
+        "/images/detail_01.jpg"
+      ],
+      "note": "جميل وموثوق",
+      "discount_tiers": [
+        {
+          "min_qty": 2,
+          "discount_pct": 10
+        }
+      ],
+      "shipping_fee": "",
+      "stock": 5,
+      "image": "/images/لقطة-الشاشة-2026-08-07-075108.png",
+      "rating": 3,
+      "category": "شخصيات"
+    }
+  ]
+}
