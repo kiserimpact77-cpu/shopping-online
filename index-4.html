@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9DL Shop | تسوق سريع وآمن</title>
+<style>
+  :root{
+    --bg-deep:#0a0a1f;--purple:#7b2ff7;--purple-bright:#a93dff;
+    --cyan:#2fd9f7;--cyan-bright:#5be8ff;--ink:#eef0ff;--muted:#9d9bc4;
+    --glow:0 0 20px rgba(123,47,247,.55),0 0 40px rgba(47,217,247,.25);
+    --card-bg:linear-gradient(160deg,rgba(123,47,247,.10),rgba(47,217,247,.06));
+    --border:1px solid rgba(167,140,255,.25);
+}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:radial-gradient(circle at 50% 0%,rgba(123,47,247,.25),transparent 60%),radial-gradient(circle at 80% 80%,rgba(47,217,247,.12),transparent 50%),var(--bg-deep);color:var(--ink);min-height:100vh;background-attachment:fixed;}
+  header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(10,8,30,.75);backdrop-filter:blur(10px);border-bottom:1px solid rgba(167,140,255,.2);}
+.logo-mark{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.logo-text{font-weight:800;font-size:1.25rem;background:linear-gradient(90deg,var(--cyan-bright),var(--purple-bright));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.cart-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:30px;background:linear-gradient(90deg,var(--purple),var(--cyan));box-shadow:var(--glow);font-weight:700;font-size:.9rem;cursor:pointer;border:none;color:#fff;}
+.cart-count{background:#0a0a1f;border-radius:50%;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;border:1px solid var(--cyan-bright);}
+.hero{text-align:center;padding:20px 20px 20px;}
+.hero h1{font-size:2.2rem;font-weight:900;background:linear-gradient(90deg,var(--cyan-bright),var(--purple-bright));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;}
+.hero p{color:var(--muted);font-size:1rem;}
+.hero .tagline{margin-top:10px;font-size:.8rem;color:var(--cyan-bright);letter-spacing:3px;text-transform:uppercase;}
+.search-bar-wrap{padding:14px 16px 0;max-width:900px;margin:0 auto;}
+.search-bar{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:var(--border);border-radius:14px;padding:10px 14px;}
+.search-bar input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-size:.95rem;}
+.search-bar input::placeholder{color:var(--muted);}
+.cat-dropdown-wrap{padding:12px 16px 0;max-width:900px;margin:0 auto;position:relative;z-index:30;}
+.cat-all-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:30px;background:linear-gradient(90deg,var(--purple),var(--cyan));border:none;color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:var(--glow);}
+.cat-dropdown{position:absolute;top:calc(100% + 6px);right:16px;background:#12103a;border:var(--border);border-radius:14px;padding:8px;z-index:40;min-width:180px;display:none;flex-direction:column;gap:4px;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.cat-dropdown.open{display:flex;}
+.cat-option{padding:9px 14px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:background .15s;}
+.cat-option:hover,.cat-option.active{background:rgba(123,47,247,.25);}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px 16px 60px;max-width:900px;margin:0 auto;}
+  @media(max-width:480px){.grid{gap:8px;padding:10px 10px 50px;}}
+.card{background:var(--card-bg);border:var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;}
+.card:hover{transform:translateY(-5px);box-shadow:var(--glow);}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#1a1535;}
+.card-body{padding:12px;display:flex;flex-direction:column;gap:5px;flex:1;}
+.card-body h3{font-size:.95rem;font-weight:700;line-height:1.2;}
+.card-desc{color:#9d9bc4;font-size:.78rem;line-height:1.3;}
+.card-price{color:var(--cyan-bright);font-weight:800;font-size:1rem;}
+.card-discount-badge{font-size:.72rem;background:linear-gradient(90deg,#ff6b8b,#ff4466);color:#fff;padding:2px 8px;border-radius:6px;display:inline-block;width:fit-content;}
+.card-shipping-badge{font-size:.7rem;color:#5be8a3;font-weight:700;}
+.card-stars{font-size:.75rem;color:#ffd700;}
+.card-note{font-size:.72rem;color:var(--muted);font-style:italic;}
+.card-countdown{font-size:.72rem;color:#ff9d5e;font-weight:700;}
+.badge-ribbon{position:absolute;top:8px;right:8px;background:linear-gradient(90deg,#ff6b8b,#ff4466);color:#fff;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:2;}
+.card{position:relative;}
+.stock-badge{font-size:.72rem;color:var(--muted);}
+.stock-out{color:#ff6b8b;font-weight:700;}
+.add-btn{margin-top:auto;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,var(--purple),var(--cyan));color:#fff;font-weight:700;cursor:pointer;font-size:.85rem;}
+.empty-state{text-align:center;color:var(--muted);padding:60px 20px;}
+.empty-state .big{font-size:3rem;margin-bottom:12px;}
+.detail-wrap{max-width:900px;margin:0 auto;padding:30px 20px 30px;display:grid;grid-template-columns:1fr 1fr;gap:30px;}
+  @media(max-width:700px){.detail-wrap{grid-template-columns:1fr;}}
+.detail-img{width:100%;border-radius:20px;border:var(--border);box-shadow:var(--glow);aspect-ratio:1/1;object-fit:cover;}
+.detail-info h2{font-size:1.5rem;margin-bottom:10px;}
+.detail-info .price{font-size:1.7rem;color:var(--cyan-bright);font-weight:900;margin-bottom:4px;}
+.detail-old-price{font-size:1rem;color:var(--muted);text-decoration:line-through;margin-bottom:8px;}
+.detail-saving{font-size:.9rem;color:#5be8a3;font-weight:700;background:rgba(91,232,163,.1);padding:8px 12px;border-radius:10px;border:1px solid rgba(91,232,163,.3);margin-bottom:12px;}
+.detail-discount-hint{font-size:.82rem;color:var(--cyan-bright);margin-bottom:12px;}
+.detail-shipping{font-size:.85rem;margin-bottom:12px;font-weight:700;}
+.detail-shipping.included{color:#5be8a3;}
+.detail-shipping.extra{color:#ffb85e;}
+.detail-info .desc{color:#9d9bc4;font-size:.9rem;line-height:1.6;margin-bottom:16px;}
+.stock-row{font-size:.85rem;color:var(--muted);margin-bottom:12px;}
+.qty-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.qty-btn{width:36px;height:36px;border-radius:8px;border:var(--border);background:rgba(123,47,247,.15);color:#fff;font-size:1.2rem;cursor:pointer;}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--cyan-bright);font-weight:600;cursor:pointer;}
+.detail-cat-tag{display:inline-block;margin-bottom:10px;font-size:.8rem;color:var(--muted);background:rgba(123,47,247,.15);padding:3px 10px;border-radius:20px;}
+.suggestions-section{max-width:900px;margin:0 auto;padding:0 20px 60px;}
+.suggestions-section h3{font-size:1rem;margin-bottom:12px;color:var(--cyan-bright);}
+.suggestions-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.suggestion-card{background:var(--card-bg);border:var(--border);border-radius:12px;overflow:hidden;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px;}
+.suggestion-card img{width:60px;height:60px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+.suggestion-info h4{font-size:.85rem;font-weight:700;margin-bottom:4px;}
+.suggestion-info .sp{font-size:.82rem;color:var(--cyan-bright);font-weight:700;}
+.cart-wrap{max-width:700px;margin:0 auto;padding:30px 20px 80px;}
+.cart-item{display:flex;gap:14px;align-items:center;background:var(--card-bg);border:var(--border);border-radius:14px;padding:12px;margin-bottom:12px;}
+.cart-item img{width:70px;height:70px;border-radius:10px;object-fit:cover;}
+.cart-item-info{flex:1;}
+.cart-item-info h4{font-size:.95rem;margin-bottom:4px;}
+.cart-item-info .p{color:var(--cyan-bright);font-weight:700;}
+.cart-item-info .saving-note{font-size:.72rem;color:#5be8a3;}
+.cart-item-info .ship-note{font-size:.72rem;color:#ffb85e;}
+.remove-btn{background:none;border:none;color:#ff6b8b;cursor:pointer;font-size:1.3rem;}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px dashed rgba(167,140,255,.3);font-size:1.2rem;font-weight:800;}
+.cart-subrow{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-top:6px;}
+.checkout-btn{width:100%;margin-top:20px;padding:16px;border:none;border-radius:14px;background:linear-gradient(90deg,#25D366,#1ebe5d);color:#fff;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 0 25px rgba(37,211,102,.4);display:flex;align-items:center;justify-content:center;gap:10px;}
+.loading{text-align:center;color:var(--muted);padding:40px;}
+.hidden{display:none !important;}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-top:1px solid rgba(167,140,255,.15);}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-mark" onclick="goHome()">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+      <path d="M2 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.5a2 2 0 0 0 2-1.6L22 6H5" stroke="url(#g1)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="9" cy="20" r="1.4" fill="#5be8ff"/>
+      <circle cx="17" cy="20" r="1.4" fill="#a93dff"/>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#5be8ff"/><stop offset="1" stop-color="#a93dff"/></linearGradient></defs>
+    </svg>
+    <div class="logo-text">9DL SHOP</div>
+  </div>
+  <button class="cart-btn" onclick="navigate('cart')">🛒 السلة <span class="cart-count" id="cartCount">0</span></button>
+</header>
+
+<!-- HOME -->
+<main id="page-home">
+  <section class="hero">
+    <h1>ONLINE SHOPPING</h1>
+    <p>أحدث المنتجات بأفضل الأسعار</p>
+    <div class="tagline">Fast • Secure • Convenient</div>
+  </section>
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="applyFilters()">
+    </div>
+  </div>
+  <div class="cat-dropdown-wrap">
+    <button class="cat-all-btn" onclick="toggleCatDropdown()">🛍️ <span id="catBtnLabel">الكل</span> ▾</button>
+    <div class="cat-dropdown" id="catDropdown"></div>
+  </div>
+  <div id="homeLoading" class="loading">جاري تحميل المنتجات...</div>
+  <section class="grid hidden" id="productGrid"></section>
+  <div class="empty-state hidden" id="emptyState"><div class="big">🛍️</div><p>مفيش نتايج</p></div>
+</main>
+
+<!-- DETAIL -->
+<main id="page-detail" class="hidden">
+  <div class="detail-wrap">
+    <div>
+      <img id="detailImg" class="detail-img" src="" alt="">
+      <div id="detailGallery" class="hidden" style="display:flex;gap:8px;margin-top:10px;overflow-x:auto;"></div>
+    </div>
+    <div class="detail-info">
+      <span class="back-link" onclick="navigate('home')">← رجوع</span>
+      <div class="detail-cat-tag hidden" id="detailCatTag"></div>
+      <div id="detailRating" style="margin-bottom:8px;"></div>
+      <h2 id="detailName"></h2>
+      <div class="price" id="detailPrice"></div>
+      <div class="detail-old-price hidden" id="detailOldPrice"></div>
+      <div class="detail-saving hidden" id="detailSaving"></div>
+      <div class="detail-discount-hint hidden" id="detailHint"></div>
+      <div id="detailCountdown" class="hidden" style="color:#ff9d5e;font-weight:700;font-size:.85rem;margin-bottom:8px;"></div>
+      <div class="detail-shipping" id="detailShipping"></div>
+      <p class="desc" id="detailDesc"></p>
+      <div id="detailNote" class="hidden" style="font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:12px;"></div>
+      <div id="detailVariants" class="hidden" style="margin-bottom:14px;"></div>
+      <div class="stock-row" id="detailStock"></div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span id="qtyVal" style="font-weight:700;font-size:1.1rem;">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <button class="add-btn" id="detailAddBtn" style="padding:14px;font-size:1rem;" onclick="addToCartFromDetail()">أضف للسلة</button>
+    </div>
+  </div>
+  <div class="suggestions-section hidden" id="suggestionsSection">
+    <h3>🔗 منتجات مشابهة</h3>
+    <div class="suggestions-grid" id="suggestionsGrid"></div>
+  </div>
+</main>
+
+<!-- CART -->
+<main id="page-cart" class="hidden">
+  <div class="cart-wrap">
+    <h2 style="margin-bottom:18px;">سلة التسوق</h2>
+    <div id="cartItems"></div>
+    <div id="cartEmpty" class="empty-state hidden">السلة فاضية 🛍️</div>
+    <div id="cartSummary" class="hidden">
+      <div class="cart-subrow"><span>المنتجات</span><span id="cartSubtotal">0 جنيه</span></div>
+      <div class="cart-subrow"><span>الشحن</span><span id="cartShipping">0 جنيه</span></div>
+      <div class="cart-total"><span>الإجمالي</span><span id="cartTotal">0 جنيه</span></div>
+      <div id="cartTotalSaving" style="text-align:center;margin-top:8px;font-size:.85rem;color:#5be8a3;font-weight:700;"></div>
+      <button class="checkout-btn" onclick="sendWhatsApp()">✅ إتمام الطلب عبر واتساب</button>
+    </div>
+  </div>
+</main>
+
+<footer>9DL Shop © 2026 — تواصل واتساب: 01024759375</footer>
+
+<script>
+const WHATSAPP_NUMBER="201024759375";
+let products=[],cart=[];
+let currentDetailId=null,detailQty=1,activeCat='',searchTerm='';
+
+/* NAVIGATION */
+function navigate(page,addToHistory=true){
+  ['home','detail','cart'].forEach(p=>document.getElementById('page-'+p).classList.add('hidden'));
+  document.getElementById('page-'+page).classList.remove('hidden');
+  if(addToHistory)history.pushState({page},'',' ');
+  if(page==='cart')renderCart();
+  window.scrollTo(0,0);
+}
+function goHome(){navigate('home');}
+window.addEventListener('popstate',e=>{navigate(e.state&&e.state.page?e.state.page:'home',false);});
+
+/* UTILS */
+function fmt(n){return Number(n).toLocaleString('en-US')+' جنيه';}
+function pid(p){return p.id||p.name;}
+
+/* LOAD */
+async function loadAll(){
+  try{
+    const res=await fetch('products.json?_='+Date.now());
+    const data=await res.json();
+    products=(data.products||[]).map((p,i)=>({...p,id:p.id||('p'+i)}));
+  }catch(e){products=[];}
+  renderCatDropdown();
+  renderGrid();
+}
+
+/* DISCOUNT */
+function getBestTier(p,qty){
+  const tiers=(p.discount_tiers||[]).filter(t=>t.min_qty<=qty).sort((a,b)=>b.min_qty-a.min_qty);
+  return tiers[0]||null;
+}
+function calcDiscountedTotal(p,qty){
+  const tier=getBestTier(p,qty);
+  const originalTotal=p.price*qty;
+  if(!tier)return{total:originalTotal,saved:0,pct:0};
+  const unitPrice=p.price*(1-tier.discount_pct/100);
+  const total=unitPrice*qty;
+  return{total,saved:originalTotal-total,pct:tier.discount_pct};
+}
+function getNextTier(p,qty){
+  const tiers=(p.discount_tiers||[]).filter(t=>t.min_qty>qty).sort((a,b)=>a.min_qty-b.min_qty);
+  return tiers[0]||null;
+}
+function shippingFeeFor(p){
+  return p.shipping_included===false?Number(p.shipping_fee||0):0;
+}
+function sortProducts(list){
+  return list.map((p,i)=>({p,i})).sort((a,b)=>{
+    const sa=(a.p.sort_order!==undefined&&a.p.sort_order!==null&&a.p.sort_order!=='')?Number(a.p.sort_order):99999;
+    const sb=(b.p.sort_order!==undefined&&b.p.sort_order!==null&&b.p.sort_order!=='')?Number(b.p.sort_order):99999;
+    return sa-sb||a.i-b.i;
+  }).map(x=>x.p);
+}
+function saleCountdownText(p){
+  if(!p.sale_ends_at)return null;
+  const end=new Date(p.sale_ends_at).getTime();
+  const now=Date.now();
+  if(isNaN(end)||end<=now)return null;
+  const diff=end-now;
+  const days=Math.floor(diff/86400000);
+  const hours=Math.floor((diff%86400000)/3600000);
+  if(days>0)return `⏳ العرض ينتهي خلال ${days} يوم`;
+  if(hours>0)return `⏳ العرض ينتهي خلال ${hours} ساعة`;
+  return `⏳ العرض بينتهي قريب جدًا`;
+}
+function ratingStars(p){
+  if(p.rating===undefined||p.rating===null||p.rating==='')return '';
+  const r=Math.round(Number(p.rating));
+  const stars='★'.repeat(r)+'☆'.repeat(5-r);
+  const count=(p.rating_count!==undefined&&p.rating_count!==null&&p.rating_count!=='')?` (${p.rating_count})`:'';
+  return `<div class="card-stars">${stars}${count}</div>`;
+}
+
+/* CATEGORY */
+function renderCatDropdown(){
+  const cats=[...new Set(products.map(p=>p.category).filter(Boolean))];
+  const dd=document.getElementById('catDropdown');
+  const allOpt=`<div class="cat-option ${activeCat===''?'active':''}" onclick="selectCat('')">🛍️ الكل</div>`;
+  const opts=cats.map(c=>`<div class="cat-option ${activeCat===c?'active':''}" onclick="selectCat('${c.replace(/'/g,"\\'")}')">${c}</div>`).join('');
+  dd.innerHTML=allOpt+opts;
+}
+function toggleCatDropdown(){document.getElementById('catDropdown').classList.toggle('open');}
+function selectCat(c){activeCat=c;document.getElementById('catBtnLabel').textContent=c||'الكل';document.getElementById('catDropdown').classList.remove('open');renderCatDropdown();renderGrid();}
+document.addEventListener('click',e=>{if(!e.target.closest('.cat-dropdown-wrap'))document.getElementById('catDropdown').classList.remove('open');});
+function applyFilters(){searchTerm=document.getElementById('searchInput').value.trim().toLowerCase();renderGrid();}
+function filteredProducts(){
+  return products.filter(p=>{
+    if(p.is_main===false)return false;
+    const mc=!activeCat||p.category===activeCat;
+    const mt=!searchTerm||(p.name||'').toLowerCase().includes(searchTerm);
+    return mc&&mt;
+  });
+}
+
+/* GRID */
+function renderGrid(){
+  document.getElementById('homeLoading').classList.add('hidden');
+  const grid=document.getElementById('productGrid');
+  const empty=document.getElementById('emptyState');
+  const list=filteredProducts();
+  if(!list.length){grid.classList.add('hidden');empty.classList.remove('hidden');return;}
+  empty.classList.add('hidden');grid.classList.remove('hidden');
+  grid.innerHTML=sortProducts(list).map(p=>{
+    const oos=(p.stock!==undefined&&p.stock!==null&&Number(p.stock)<=0);
+    const stockLine=(p.stock===undefined||p.stock===null||p.stock==='')?'':(oos?'<div class="stock-badge stock-out">نفذت الكمية</div>':`<div class="stock-badge">متبقي: ${p.stock}</div>`);
+    const hasTiers=(p.discount_tiers||[]).length>0;
+    const discBadge=hasTiers?'<div class="card-discount-badge">🏷️ خصم عند زيادة الكمية</div>':'';
+    const shipBadge=p.shipping_included===false?`<div class="card-shipping-badge" style="color:#ffb85e;">🚚 شحن ${fmt(p.shipping_fee||0)}</div>`:'<div class="card-shipping-badge">🚚 شامل الشحن</div>';
+    const badgeRibbon=p.badge?`<div class="badge-ribbon">${p.badge}</div>`:'';
+    const countdown=saleCountdownText(p);
+    const countdownHtml=countdown?`<div class="card-countdown">${countdown}</div>`:'';
+    const noteHtml=p.note?`<div class="card-note">${p.note}</div>`:'';
+    return `<div class="card" onclick="openDetail('${pid(p)}')">
+        ${badgeRibbon}
+<img src="${p.image||''}" alt="${p.name||''}" loading="lazy">
+<div class="card-body">
+<h3>${p.name||''}</h3>
+        ${p.description?`<div class="card-desc">${p.description}</div>`:''}
+<div class="card-price">${fmt(p.price||0)}</div>
+        ${discBadge}${shipBadge}${ratingStars(p)}${countdownHtml}${noteHtml}${stockLine}
+<button class="add-btn" ${oos?'disabled style="opacity:.5;cursor:not-allowed;"':''}
+onclick="event.stopPropagation();${oos?'':` addToCart('${pid(p)}',1)`}">${oos?'غير متاح':'أضف للسلة'}</button>
+</div>
+</div>`;
+  }).join('');
+}
+
+/* DETAIL */
+let selectedVariant=null;
+function openDetail(id){
+  currentDetailId=id;detailQty=1;selectedVariant=null;
+  const p=products.find(x=>pid(x)===id);if(!p)return;
+  document.getElementById('detailImg').src=p.image||'';
+  document.getElementById('detailName').textContent=p.name||'';
+  /* GALLERY */
+  const galEl=document.getElementById('detailGallery');
+  const gallery=(p.gallery||[]).map(g=>g.src).filter(Boolean);
+  if(gallery.length){
+    galEl.classList.remove('hidden');
+    galEl.innerHTML=[p.image,...gallery].filter(Boolean).map(src=>`<img src="${src}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:var(--border);cursor:pointer;flex-shrink:0;" onclick="document.getElementById('detailImg').src='${src}'">`).join('');
+  }else{galEl.classList.add('hidden');galEl.innerHTML='';}
+  /* RATING */
+  const ratEl=document.getElementById('detailRating');
+  ratEl.innerHTML=ratingStars(p);
+  /* COUNTDOWN */
+  const cdEl=document.getElementById('detailCountdown');
+  const cd=saleCountdownText(p);
+  if(cd){cdEl.textContent=cd;cdEl.classList.remove('hidden');}else{cdEl.classList.add('hidden');}
+  /* NOTE */
+  const noteEl=document.getElementById('detailNote');
+  if(p.note){noteEl.textContent='📝 '+p.note;noteEl.classList.remove('hidden');}else{noteEl.classList.add('hidden');}
+  /* VARIANTS */
+  const varEl=document.getElementById('detailVariants');
+  const variants=(p.variants||[]).map(v=>v.value).filter(Boolean);
+  if(variants.length){
+    selectedVariant=variants[0];
+    varEl.classList.remove('hidden');
+    varEl.innerHTML=`<label style="display:block;font-size:.85rem;color:var(--muted);margin-bottom:6px;">اختر:</label>
+      <select onchange="selectedVariant=this.value" style="width:100%;padding:10px;border-radius:10px;border:var(--border);background:rgba(255,255,255,.04);color:var(--ink);font-size:.9rem;">
+        ${variants.map(v=>`<option value="${v}">${v}</option>`).join('')}
+      </select>`;
+  }else{varEl.classList.add('hidden');varEl.innerHTML='';}
+  document.getElementById('detailDesc').textContent=p.description||'';
+  document.getElementById('detailDesc').style.display=p.description?'block':'none';
+  const tagEl=document.getElementById('detailCatTag');
+  if(p.category){tagEl.textContent=p.category;tagEl.classList.remove('hidden');}else{tagEl.classList.add('hidden');}
+  const oos=(p.stock!==undefined&&p.stock!==null&&Number(p.stock)<=0);
+  const stockEl=document.getElementById('detailStock');
+  if(p.stock===undefined||p.stock===null||p.stock==='')stockEl.textContent='';
+  else if(oos)stockEl.innerHTML='<span style="color:#ff6b8b;font-weight:700;">نفذت الكمية</span>';
+  else stockEl.textContent=`متبقي: ${p.stock}`;
+  const addBtn=document.getElementById('detailAddBtn');
+  addBtn.disabled=oos;addBtn.style.opacity=oos?'.5':'1';addBtn.textContent=oos?'غير متاح':'أضف للسلة';
+  document.getElementById('qtyVal').textContent=detailQty;
+  const shipEl=document.getElementById('detailShipping');
+  if(p.shipping_included===false){shipEl.textContent=`🚚 مصاريف الشحن: ${fmt(p.shipping_fee||0)}`;shipEl.className='detail-shipping extra';}
+  else{shipEl.textContent='🚚 شامل مصاريف الشحن';shipEl.className='detail-shipping included';}
+  updateDetailPrice();
+  renderSuggestions(p);
+  navigate('detail');
+}
+function renderSuggestions(p){
+  const sec=document.getElementById('suggestionsSection');
+  const grid=document.getElementById('suggestionsGrid');
+  if(!p.group_id){sec.classList.add('hidden');return;}
+  const suggestions=products.filter(x=>x.group_id===p.group_id&&pid(x)!==pid(p));
+  if(!suggestions.length){sec.classList.add('hidden');return;}
+  sec.classList.remove('hidden');
+  grid.innerHTML=suggestions.map(s=>`
+<div class="suggestion-card" onclick="openDetail('${pid(s)}')">
+<img src="${s.image||''}" alt="${s.name||''}">
+<div class="suggestion-info">
+<h4>${s.name||''}</h4>
+<div class="sp">${fmt(s.price||0)}</div>
+</div>
+</div>`).join('');
+}
+function updateDetailPrice(){
+  const p=products.find(x=>pid(x)===currentDetailId);if(!p)return;
+  const{total,saved,pct}=calcDiscountedTotal(p,detailQty);
+  document.getElementById('detailPrice').textContent=fmt(total);
+  const oldEl=document.getElementById('detailOldPrice');
+  const savEl=document.getElementById('detailSaving');
+  const hintEl=document.getElementById('detailHint');
+  if(saved>0){
+    oldEl.textContent=fmt(p.price*detailQty);oldEl.classList.remove('hidden');
+    savEl.textContent=`🎉 وفّرت ${fmt(saved)} (خصم ${pct}%)`;savEl.classList.remove('hidden');
+    hintEl.classList.add('hidden');
+  }else{
+    oldEl.classList.add('hidden');savEl.classList.add('hidden');
+    const next=getNextTier(p,detailQty);
+    if(next){hintEl.textContent=`💡 أضف ${next.min_qty-detailQty} قطعة أكتر ووفّر أكتر (خصم ${next.discount_pct}%)`;hintEl.classList.remove('hidden');}
+    else hintEl.classList.add('hidden');
+  }
+}
+function changeQty(delta){
+  const p=products.find(x=>pid(x)===currentDetailId);
+  let q=detailQty+delta;if(q<1)q=1;
+  if(p&&p.stock!==undefined&&p.stock!==null&&p.stock!==''&&q>Number(p.stock))q=Number(p.stock);
+  detailQty=q;document.getElementById('qtyVal').textContent=detailQty;
+  updateDetailPrice();
+}
+function addToCartFromDetail(){addToCart(currentDetailId,detailQty,selectedVariant);navigate('cart');}
+
+/* CART */
+function addToCart(id,qty,variant){
+  const p=products.find(x=>pid(x)===id);
+  if(p&&p.stock!==undefined&&p.stock!==null&&p.stock!==''&&Number(p.stock)<=0)return;
+  const ex=cart.find(c=>c.id===id&&c.variant===variant);
+  let tq=(ex?ex.qty:0)+qty;
+  if(p&&p.stock!==undefined&&p.stock!==null&&p.stock!==''&&tq>Number(p.stock))tq=Number(p.stock);
+  if(ex)ex.qty=tq;else cart.push({id,qty:tq,variant:variant||null});
+  updateCartCount();
+}
+function removeFromCart(id){cart=cart.filter(c=>c.id!==id);updateCartCount();renderCart();}
+function updateCartCount(){document.getElementById('cartCount').textContent=cart.reduce((s,c)=>s+c.qty,0);}
+function renderCart(){
+  const wrap=document.getElementById('cartItems');
+  const empty=document.getElementById('cartEmpty');
+  const summary=document.getElementById('cartSummary');
+  if(!cart.length){wrap.innerHTML='';empty.classList.remove('hidden');summary.classList.add('hidden');return;}
+  empty.classList.add('hidden');summary.classList.remove('hidden');
+  let subtotal=0,totalSaved=0,totalShipping=0;
+  wrap.innerHTML=cart.map(c=>{
+    const p=products.find(x=>pid(x)===c.id);if(!p)return'';
+    const{total:lt,saved,pct}=calcDiscountedTotal(p,c.qty);
+    const ship=shippingFeeFor(p);
+    subtotal+=lt;totalSaved+=saved;totalShipping+=ship;
+    return `<div class="cart-item">
+<img src="${p.image||''}" alt="${p.name||''}">
+<div class="cart-item-info">
+<h4>${p.name||''} × ${c.qty}</h4>
+        ${c.variant?`<div style="font-size:.75rem;color:var(--cyan-bright);">الخيار: ${c.variant}</div>`:''}
+<div class="p">${fmt(lt)}</div>
+        ${saved>0?`<div class="saving-note">وفّرت ${fmt(saved)} (خصم ${pct}%)</div>`:''}
+        ${ship>0?`<div class="ship-note">+ شحن ${fmt(ship)}</div>`:''}
+</div>
+<button class="remove-btn" onclick="removeFromCart('${pid(p)}')">✕</button>
+</div>`;
+  }).join('');
+  document.getElementById('cartSubtotal').textContent=fmt(subtotal);
+  document.getElementById('cartShipping').textContent=fmt(totalShipping);
+  document.getElementById('cartTotal').textContent=fmt(subtotal+totalShipping);
+  document.getElementById('cartTotalSaving').textContent=totalSaved>0?`🎉 إجمالي التوفير: ${fmt(totalSaved)}`:'';
+}
+
+/* WHATSAPP CHECKOUT */
+function sendWhatsApp(){
+  if(!cart.length)return;
+  let msg=`🛍️ *طلب جديد من 9DL Shop*\n\n🛒 *المنتجات:*\n`;
+  let subtotal=0,totalSaved=0,totalShipping=0;
+  cart.forEach(c=>{
+    const p=products.find(x=>pid(x)===c.id);if(!p)return;
+    const{total:lt,saved,pct}=calcDiscountedTotal(p,c.qty);
+    const ship=shippingFeeFor(p);
+    subtotal+=lt;totalSaved+=saved;totalShipping+=ship;
+    msg+=`• ${p.name}${c.variant?` (${c.variant})`:''} × ${c.qty} = ${fmt(lt)}${saved>0?` (خصم ${pct}%)`:''}${ship>0?` + شحن ${fmt(ship)}`:''}\n`;
+  });
+  if(totalSaved>0)msg+=`\n🎉 التوفير: ${fmt(totalSaved)}`;
+  if(totalShipping>0)msg+=`\n🚚 إجمالي الشحن: ${fmt(totalShipping)}`;
+  msg+=`\n💰 *الإجمالي: ${fmt(subtotal+totalShipping)}*`;
+  cart=[];updateCartCount();renderCart();
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
+  navigate('home');
+}
+
+loadAll();updateCartCount();
+history.replaceState({page:'home'},'');
+</script>
+</body>
+</html>
