@@ -54,8 +54,7 @@
 .add-btn{margin-top:auto;padding:10px;border:none;border-radius:10px;background:linear-gradient(90deg,var(--purple),var(--cyan));color:#fff;font-weight:700;cursor:pointer;font-size:.85rem;}
 .empty-state{text-align:center;color:var(--muted);padding:60px 20px;}
 .empty-state .big{font-size:3rem;margin-bottom:12px;}
-.detail-wrap{max-width:420px;margin:0 auto;padding:30px 20px 30px;display:grid;grid-template-columns:1fr;gap:16px;}
- @media(max-width:700px){.detail-wrap{grid-template-columns:1fr;}.detail-img{max-width:320px;margin:0 auto;}}
+.detail-wrap{max-width:340px;margin:0 auto;padding:30px 20px 30px;display:grid;grid-template-columns:1fr;gap:16px;}
 .detail-img{width:100%;border-radius:20px;border:var(--border);box-shadow:var(--glow);aspect-ratio:1/1;object-fit:cover;}
 .detail-info h2{font-size:1.5rem;margin-bottom:10px;}
 .detail-info .price{font-size:1.7rem;color:var(--cyan-bright);font-weight:900;margin-bottom:4px;}
@@ -65,7 +64,7 @@
 .detail-shipping{font-size:.85rem;margin-bottom:12px;font-weight:700;}
 .detail-shipping.included{color:#5be8a3;}
 .detail-shipping.extra{color:#ffb85e;}
-.detail-info .desc{color:#9d9bc4;font-size:.9rem;line-height:1.6;margin-bottom:16px;}
+.detail-info .desc{color:#9d9bc4;font-size:.9rem;line-height:1.6;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;}
 .stock-row{font-size:.85rem;color:var(--muted);margin-bottom:12px;}
 .qty-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
 .qty-btn{width:36px;height:36px;border-radius:8px;border:var(--border);background:rgba(123,47,247,.15);color:#fff;font-size:1.2rem;cursor:pointer;}
@@ -365,7 +364,7 @@ function openDetail(id){
   addBtn.disabled=oos;addBtn.style.opacity=oos?'.5':'1';addBtn.textContent=oos?'غير متاح':'أضف للسلة';
   document.getElementById('qtyVal').textContent=detailQty;
   const shipEl=document.getElementById('detailShipping');
-  if(p.shipping_included===false){shipEl.textContent=`🚚التوصيل مجاني: ${fmt(p.shipping_fee||0)}`;shipEl.className='detail-shipping extra';}
+  if(p.shipping_included===false){shipEl.textContent=`🚚 مصاريف الشحن: ${fmt(p.shipping_fee||0)}`;shipEl.className='detail-shipping extra';}
   else{shipEl.textContent='🚚 التوصيل مجاني';shipEl.className='detail-shipping included';}
   updateDetailPrice();
   renderSuggestions(p);
