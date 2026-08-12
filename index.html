@@ -40,7 +40,7 @@
 .card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#1a1535;}
 .card-body{padding:12px;display:flex;flex-direction:column;gap:5px;flex:1;}
 .card-body h3{font-size:.95rem;font-weight:700;line-height:1.2;}
-.card-desc{color:#9d9bc4;font-size:.78rem;line-height:1.3;}
+.card-desc{color:#9d9bc4;font-size:.78rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .card-price{color:var(--cyan-bright);font-weight:800;font-size:1rem;}
 .card-discount-badge{font-size:.72rem;background:linear-gradient(90deg,#ff6b8b,#ff4466);color:#fff;padding:2px 8px;border-radius:6px;display:inline-block;width:fit-content;}
 .card-shipping-badge{font-size:.7rem;color:#5be8a3;font-weight:700;}
@@ -64,8 +64,7 @@
 .detail-shipping{font-size:.85rem;margin-bottom:12px;font-weight:700;}
 .detail-shipping.included{color:#5be8a3;}
 .detail-shipping.extra{color:#ffb85e;}
-.detail-info .desc{color:#9d9bc4;font-size:.9rem;line-height:1.6;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.desc.expanded{-webkit-line-clamp:unset;}
+.detail-info .desc{color:#9d9bc4;font-size:.9rem;line-height:1.6;margin-bottom:16px;}
 .stock-row{font-size:.85rem;color:var(--muted);margin-bottom:12px;}
 .qty-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
 .qty-btn{width:36px;height:36px;border-radius:8px;border:var(--border);background:rgba(123,47,247,.15);color:#fff;font-size:1.2rem;cursor:pointer;}
@@ -135,12 +134,13 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-
 <main id="page-detail" class="hidden">
   <div class="detail-wrap">
     <div>
-      <img id="detailImg" class="detail-img" src="" alt="" onclick="toggleMoreDetails()" style="cursor:pointer;">
+      <img id="detailImg" class="detail-img" src="" alt="">
       <div id="detailGallery" class="hidden" style="display:flex;gap:8px;margin-top:10px;overflow-x:auto;"></div>
     </div>
     <div class="detail-info">
       <span class="back-link" onclick="navigate('home')">← رجوع</span>
       <div class="detail-cat-tag hidden" id="detailCatTag"></div>
+      <div id="detailRating" style="margin-bottom:8px;"></div>
       <h2 id="detailName"></h2>
       <div class="price" id="detailPrice"></div>
       <div class="detail-old-price hidden" id="detailOldPrice"></div>
@@ -149,12 +149,9 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.8rem;border-
       <div id="detailCountdown" class="hidden" style="color:#ff9d5e;font-weight:700;font-size:.85rem;margin-bottom:8px;"></div>
       <div class="detail-shipping" id="detailShipping"></div>
       <p class="desc" id="detailDesc"></p>
-      <div id="detailMoreWrap" class="hidden">
-        <div id="detailRatingFull" style="margin-bottom:8px;"></div>
-        <div id="detailNote" class="hidden" style="font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:12px;"></div>
-        <div id="detailVariants" class="hidden" style="margin-bottom:14px;"></div>
-        <div class="stock-row" id="detailStock"></div>
-      </div>
+      <div id="detailNote" class="hidden" style="font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:12px;"></div>
+      <div id="detailVariants" class="hidden" style="margin-bottom:14px;"></div>
+      <div class="stock-row" id="detailStock"></div>
       <div class="qty-row">
         <button class="qty-btn" onclick="changeQty(-1)">−</button>
         <span id="qtyVal" style="font-weight:700;font-size:1.1rem;">1</span>
@@ -311,7 +308,7 @@ function renderGrid(){
 <h3>${p.name||''}</h3>
         ${p.description?`<div class="card-desc">${p.description}</div>`:''}
 <div class="card-price">${fmt(p.price||0)}</div>
-        ${discBadge}${shipBadge}${ratingStars(p)}${countdownHtml}${noteHtml}${stockLine}
+        ${shipBadge}${stockLine}
 <button class="add-btn" ${oos?'disabled style="opacity:.5;cursor:not-allowed;"':''}
 onclick="event.stopPropagation();${oos?'':` addToCart('${pid(p)}',1)`}">${oos?'غير متاح':'أضف للسلة'}</button>
 </div>
@@ -334,7 +331,7 @@ function openDetail(id){
     galEl.innerHTML=[p.image,...gallery].filter(Boolean).map(src=>`<img src="${src}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:var(--border);cursor:pointer;flex-shrink:0;" onclick="document.getElementById('detailImg').src='${src}'">`).join('');
   }else{galEl.classList.add('hidden');galEl.innerHTML='';}
   /* RATING */
-  const ratEl=document.getElementById('detailRatingFull');
+  const ratEl=document.getElementById('detailRating');
   ratEl.innerHTML=ratingStars(p);
   /* COUNTDOWN */
   const cdEl=document.getElementById('detailCountdown');
@@ -406,9 +403,6 @@ function updateDetailPrice(){
     if(next){hintEl.textContent=`💡 أضف ${next.min_qty-detailQty} قطعة أكتر ووفّر أكتر (خصم ${next.discount_pct}%)`;hintEl.classList.remove('hidden');}
     else hintEl.classList.add('hidden');
   }
-}
-function toggleMoreDetails(){
-  document.getElementById('detailMoreWrap').classList.toggle('hidden');
 }
 function changeQty(delta){
   const p=products.find(x=>pid(x)===currentDetailId);
@@ -486,3 +480,4 @@ history.replaceState({page:'home'},'');
 </script>
 </body>
 </html>
+
